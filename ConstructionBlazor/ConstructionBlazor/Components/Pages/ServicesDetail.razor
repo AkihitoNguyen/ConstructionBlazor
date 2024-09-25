@@ -1,5 +1,15 @@
 ﻿<h3>ServicesDetail</h3>
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navigation
+@rendermode InteractiveServer
 
-@code {
-
+@code
+{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("checkPreloader");
+        }
+    }
 }

@@ -1,4 +1,7 @@
 ﻿@page "/projects"
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navigation
+@rendermode InteractiveServer
 <PageTitle>Dự án</PageTitle>
 
 <main class="main">
@@ -185,3 +188,15 @@
     </section><!-- /Projects Section -->
 
 </main>
+
+@code
+{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("checkPreloader");
+            await JSRuntime.InvokeVoidAsync("initIsotope");
+        }
+    }
+}

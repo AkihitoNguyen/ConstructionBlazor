@@ -1,4 +1,7 @@
 ﻿@page "/services"
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navigation
+@rendermode InteractiveServer
 
 <main class="main">
 
@@ -334,3 +337,14 @@
     </section><!-- /Testimonials Section -->
 
 </main>
+
+@code
+{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("checkPreloader");
+        }
+    }
+}

@@ -1,5 +1,14 @@
 ﻿<h3>ProjectDetail</h3>
-
-@code {
-
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navigation
+@rendermode InteractiveServer
+@code
+{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("checkPreloader");
+        }
+    }
 }

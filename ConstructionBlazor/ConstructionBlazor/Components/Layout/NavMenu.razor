@@ -1,21 +1,23 @@
 ﻿@inject NavigationManager navigation
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
 
  <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
-        <NavLink href="/" class="logo d-flex align-items-center">
+    <NavLink href="/" @onclick="@(() => NavigateServices("/"))" class="logo d-flex align-items-center">
             <img src="assets/img/logo.png" alt="">
             <h1 class="sitename"></h1> <span></span>
         </NavLink>
 
         <nav id="navmenu" class="navmenu">
             <ul>
-            <li><NavLink Match="NavLinkMatch.All"  href="" class="">TRANG CHỦ</NavLink></li>
-            <li><a href="/about" target="_self" class="@check("/about")">GIỚI THIỆU</a></li>
-            <li><NavLink Match="NavLinkMatch.All" href="/services" class="">LĨNH VỰC HOẠT ĐỘNG</NavLink></li>
-            <li><NavLink Match="NavLinkMatch.Prefix" href="/projects" class="">DỰ ÁN</NavLink></li>
+            <li><NavLink Match="NavLinkMatch.All" href="" class="" @onclick="@(() => NavigateServices("/"))">TRANG CHỦ</NavLink></li>
+            <li><NavLink Match="NavLinkMatch.All"  href="/about" @onclick="@(() => NavigateServices("/about"))">GIỚI THIỆU</NavLink></li>
+            <li><NavLink Match="NavLinkMatch.All" @onclick="@(() => NavigateServices("/services"))" href="services" class="">LĨNH VỰC HOẠT ĐỘNG</NavLink></li>
+            <li><NavLink Match="NavLinkMatch.All" href="/projects" class="" @onclick="@(() => NavigateServices("/projects"))">DỰ ÁN</NavLink></li>
                 <li class="dropdown">
                 <NavLink href="#" class=""><span>QUAN HỆ CỔ ĐÔNG</span> <i class="bi bi-chevron-down toggle-dropdown"></i></NavLink>
-                    <ul>
+                    <ul>    
                     <li><NavLink class="" href="#">Dropdown 1</NavLink></li>
                         <li class="dropdown">
                         <NavLink class="" href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></NavLink>
@@ -32,7 +34,7 @@
                         <li><NavLink  href="#">Dropdown 4</NavLink></li>
                     </ul>
                 </li>
-                <li><NavLink Match="NavLinkMatch.All" href="/contact">LIÊN HỆ</NavLink></li>
+            <li><NavLink Match="NavLinkMatch.All" href="/contact" @onclick="@(() => NavigateServices("/contact"))">LIÊN HỆ</NavLink></li>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
@@ -40,5 +42,17 @@
     </div>
 
 @code{
-    private string check(string href) => navigation.Uri.EndsWith(href, StringComparison.OrdinalIgnoreCase) ? "active" : string.Empty;
+    private void NavigateServices(string href)
+    {
+        navigation.NavigateTo(href, true);
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            JSRuntime.InvokeVoidAsync("mobileNavSetup");
+
+        }
+    }
+
 }
